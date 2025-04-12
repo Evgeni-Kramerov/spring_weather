@@ -38,14 +38,14 @@ public class JsonMapper {
 //            private String country;
             weatherResponseDTO.setCountry(root.path("sys").path("country").asText());
 //            private double temp;
-            weatherResponseDTO.setTemp(root.path("main").path("temp").asDouble());
-            weatherResponseDTO.setFeelsLike(root.path("main").path("feels_like").asDouble());
+            weatherResponseDTO.setTemp(root.path("main").path("temp").asInt());
+            weatherResponseDTO.setFeelsLike(root.path("main").path("feels_like").asInt());
 //            private String mainWeather;
             weatherResponseDTO.setMainWeather(root.get("weather").get(0).get("main").asText());
 //            private String icon;
             weatherResponseDTO.setIcon(root.get("weather").get(0).get("icon").asText());
 //            private double humidity;
-            weatherResponseDTO.setHumidity(root.path("main").path("humidity").asDouble());
+            weatherResponseDTO.setHumidity(root.path("main").path("humidity").asInt(0));
 
             return weatherResponseDTO;
 

@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 public class WeatherResponseDTO {
     private String name;
     private String country;
-    private double temp;
-    private double feelsLike;
+    private int temp;
+    private int feelsLike;
     private String mainWeather;
     private String icon;
-    private double humidity;
+    private int humidity;
 }
