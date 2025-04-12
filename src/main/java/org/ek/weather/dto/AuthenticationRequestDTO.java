@@ -1,0 +1,13 @@
+package org.ek.weather.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AuthenticationRequestDTO {
+    private String login;
+    private String password;
+}

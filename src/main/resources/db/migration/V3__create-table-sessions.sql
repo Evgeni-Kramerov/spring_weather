@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS sessions;
+CREATE TABLE IF NOT EXISTS sessions(
+    id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+    userId INT NOT NULL REFERENCES users(id),
+    expiresAt TIMESTAMP NOT NULL
+);
