@@ -15,6 +15,7 @@ import org.ek.weather.utils.password.PassHasher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.PublicKey;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +35,11 @@ public class LocationService {
 
     public List<Location> getAllUserLocations(User user) {
         return locationRepository.findByUser(user);
+    }
+
+    public void deleteLocation(String locationName, User user) {
+        Location locationToDelete = locationRepository.findByUserAndName(user, locationName);
+        locationRepository.delete(locationToDelete);
     }
 
 }

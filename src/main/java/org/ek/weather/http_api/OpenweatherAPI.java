@@ -31,7 +31,7 @@ public class OpenweatherAPI {
         this.jsonMapper = jsonMapper;
     }
 
-    public WeatherResponseDTO getWeather(double lat, double lon) throws URISyntaxException, IOException, InterruptedException {
+    public WeatherResponseDTO getWeather(double lat, double lon, String locationName) throws URISyntaxException, IOException, InterruptedException {
         String uri = getWeatherRequestURL(lat, lon);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -41,7 +41,7 @@ public class OpenweatherAPI {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
-        return jsonMapper.getWeather(response.body());
+        return jsonMapper.getWeather(response.body(), locationName);
     }
 
     public LocationResponseDTO[] getLocations(String cityName) throws URISyntaxException, IOException, InterruptedException {
@@ -70,18 +70,6 @@ public class OpenweatherAPI {
                 .replace("{lat}",String.valueOf(latitude))
                 .replace("{lon}",String.valueOf(longitude))
                 .replace("{API key}", API_KEY);
-    }
-
-    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
-        JsonMapper jsonMapper = new JsonMapper();
-        OpenweatherAPI openweatherAPI = new OpenweatherAPI(jsonMapper);
-
-        String CITY_NAME = "London";
-        Double lat=51.5073219;
-        Double lon=-0.1276474;
-
-        System.out.println(openweatherAPI.getWeather(lat, lon));
-
     }
 
 }

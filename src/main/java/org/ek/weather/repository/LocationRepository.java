@@ -15,4 +15,5 @@ public interface LocationRepository extends JpaRepository<Location, Integer> {
 
     List<Location> findByUser(User user);
 
+    Location findByUserAndName(User user, String locationName);
 }
