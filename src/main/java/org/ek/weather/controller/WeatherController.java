@@ -128,11 +128,7 @@ public class WeatherController {
             LocationResponseDTO[] locationResponseDTOS = openweatherAPI.getLocations(cityName);
             redirectAttributes.addFlashAttribute("locations", locationResponseDTOS);
             return "redirect:/search";
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -149,28 +145,16 @@ public class WeatherController {
         AuthenticationRequestDTO authenticationRequestDTO = new AuthenticationRequestDTO(
                 username, password);
 
-        try {
-            User autentificatedUser = userService.authenticateUser(authenticationRequestDTO);
+        User autentificatedUser = userService.authenticateUser(authenticationRequestDTO);
             //write session to db
-            UUID sessionId =  sessionService.createNewSession(autentificatedUser);
+        UUID sessionId =  sessionService.createNewSession(autentificatedUser);
             //make cookies with this session uuid "_sessionId"
-            Cookie sessionIdCookie = new Cookie("_sessionId", sessionId.toString());
-            sessionIdCookie.setMaxAge(60 * 30);
+        Cookie sessionIdCookie = new Cookie("_sessionId", sessionId.toString());
+         sessionIdCookie.setMaxAge(60 * 30);
             //TODO Model VS response
-            response.addCookie(sessionIdCookie);
+         response.addCookie(sessionIdCookie);
 
-            return "redirect:/";
-        }
-        catch (UserNotFoundException e) {
-            System.out.println("loginError");
-            redirectAttributes.addFlashAttribute("loginError", true);
-            return "redirect:/login";
-        }
-        catch (InvalidPasswordException e){
-            System.out.println("passwordError");
-            redirectAttributes.addFlashAttribute("passwordError", true);
-            return "redirect:/login";
-        }
+         return "redirect:/";
 
     }
 
@@ -189,22 +173,8 @@ public class WeatherController {
         RegistrationRequestDTO registrationRequestDTO = new RegistrationRequestDTO(
                 username, password, repeatPassword);
 
-        System.out.println(registrationRequestDTO);
-
-        try {
-            userService.validateUser(registrationRequestDTO);
-            userService.addNewUser(registrationRequestDTO);
-        }
-        catch (PasswordsDoesntMatchException e) {
-            System.out.println("passwordDoesntMatchError");
-            redirectAttributes.addFlashAttribute("passwordDoesntMatchError", true);
-            return "redirect:/new";
-        }
-        catch (UserAlreadyExistException e) {
-            System.out.println("userAlreadyExistError");
-            redirectAttributes.addFlashAttribute("userAlreadyExistError", true);
-            return "redirect:/new";
-        }
+        userService.validateUser(registrationRequestDTO);
+        userService.addNewUser(registrationRequestDTO);
 
         return "sign-in";
     }
