@@ -134,20 +134,31 @@ public class WeatherController {
     }
 
     //*AUTEntification*//
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Cookie sessionId = WebUtils.getCookie(request, "_sessionId");
+        if (!(sessionId == null)) {
+            sessionId.setMaxAge(0);
+        }
+        response.addCookie(sessionId);
+        return "redirect:/";
+    }
+
+
+
     @GetMapping("/login")
     public String getLoginPage() {return "sign-in";}
 
     @PostMapping("/login")
     public String postLogin(@ModelAttribute("username") String username,
                             @ModelAttribute("password") String password,
-                            HttpServletResponse response,
-                            RedirectAttributes redirectAttributes){
+                            HttpServletResponse response){
         AuthenticationRequestDTO authenticationRequestDTO = new AuthenticationRequestDTO(
                 username, password);
 
         User autentificatedUser = userService.authenticateUser(authenticationRequestDTO);
             //write session to db
-        UUID sessionId =  sessionService.createNewSession(autentificatedUser);
+         UUID sessionId =  sessionService.createNewSession(autentificatedUser);
             //make cookies with this session uuid "_sessionId"
         Cookie sessionIdCookie = new Cookie("_sessionId", sessionId.toString());
          sessionIdCookie.setMaxAge(60 * 30);
@@ -167,8 +178,7 @@ public class WeatherController {
     @PostMapping("/new")
     public String postSignUp(@ModelAttribute("username") String username,
                          @ModelAttribute("password") String password,
-                         @ModelAttribute("repeat-password") String repeatPassword,
-                         RedirectAttributes redirectAttributes) {
+                         @ModelAttribute("repeat-password") String repeatPassword) {
 
         RegistrationRequestDTO registrationRequestDTO = new RegistrationRequestDTO(
                 username, password, repeatPassword);
