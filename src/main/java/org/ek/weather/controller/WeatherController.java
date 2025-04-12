@@ -21,6 +21,7 @@ import org.ek.weather.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,13 +70,37 @@ public class WeatherController {
             List<WeatherResponseDTO> locations = new ArrayList<>();
             for (Location location : baseLocations) {
                 WeatherResponseDTO locationResponseDTO = openweatherAPI
-                        .getWeather(location.getLatitude(),location.getLongitude());
+                        .getWeather(location.getLatitude(),
+                                    location.getLongitude(),
+                                    location.getName());
                 locations.add(locationResponseDTO);
             }
             model.addAttribute("username", user.getLogin());
             model.addAttribute("locations", locations);
         }
         return "index";
+    }
+
+    //*Delete city
+
+    @PostMapping("/delete_city")
+    public String deleteCity(@ModelAttribute("locationToDelete") String locationToDelete,
+            HttpServletRequest request) {
+        Cookie sessionId = WebUtils.getCookie(request, "_sessionId");
+        //if == null - redirect to authentication
+        if (sessionId == null) {
+            return "redirect:/login";
+        }
+        else {
+            //TODO exception handling
+            Session session = sessionService.findById(UUID.fromString(sessionId.getValue())).orElse(null);
+            User user = userService.findById(session.getUser().getId()).orElse(null);
+            locationService.deleteLocation(locationToDelete, user);
+        }
+
+        return "redirect:/";
+
+
     }
 
     //*  Adding city

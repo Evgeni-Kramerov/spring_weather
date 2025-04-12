@@ -28,13 +28,13 @@ public class JsonMapper {
         }
     }
 
-    public WeatherResponseDTO getWeather(String jsonResponse) throws JsonProcessingException {
+    public WeatherResponseDTO getWeather(String jsonResponse, String locationName) throws JsonProcessingException {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             JsonNode root = objectMapper.readTree(jsonResponse);
             WeatherResponseDTO weatherResponseDTO = new WeatherResponseDTO();
 //            private String name;
-            weatherResponseDTO.setName(root.get("name").asText());
+            weatherResponseDTO.setName(locationName);
 //            private String country;
             weatherResponseDTO.setCountry(root.path("sys").path("country").asText());
 //            private double temp;
