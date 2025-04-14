@@ -19,7 +19,6 @@ public class AutentificationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        System.out.println("AutentificationFilter " + request.getRequestURI() );
 //        request = null;
         filterChain.doFilter(request, servletResponse);
     }
