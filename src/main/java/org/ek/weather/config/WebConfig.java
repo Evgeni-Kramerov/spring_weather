@@ -93,7 +93,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private Properties getProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.show_sql", "true");
+//        properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.driver_class", "com.postgresql.Driver");

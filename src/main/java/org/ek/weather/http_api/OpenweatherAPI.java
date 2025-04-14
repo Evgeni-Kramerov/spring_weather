@@ -40,7 +40,6 @@ public class OpenweatherAPI {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
         return jsonMapper.getWeather(response.body(), locationName);
     }
 
