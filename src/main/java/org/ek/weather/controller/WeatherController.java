@@ -44,7 +44,7 @@ public class WeatherController {
 
 
     @Autowired
-    WeatherController(UserService userService,
+    public WeatherController(UserService userService,
                       SessionService sessionService,
                       LocationService locationService,
                       OpenweatherAPI openweatherAPI) {

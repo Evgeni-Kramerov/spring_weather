@@ -33,6 +33,7 @@ import java.util.Properties;
 @ComponentScan("org.ek.weather")
 @EnableWebMvc
 @EnableTransactionManagement
+@Profile("!test")
 @EnableJpaRepositories(basePackages = "org.ek.weather.repository")
 
 public class WebConfig implements WebMvcConfigurer {
@@ -70,7 +71,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public DataSource getDataSource() {
+    public DataSource DataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl("jdbc:postgresql://localhost:5432/weather_db");
         dataSource.setUsername("postgres");
@@ -81,7 +82,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(getDataSource());
+        em.setDataSource(DataSource());
         em.setPackagesToScan("org.ek.weather.model");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -113,18 +114,6 @@ public class WebConfig implements WebMvcConfigurer {
         Flyway flyway = Flyway.configure()
                 .dataSource("jdbc:postgresql://localhost:5432/weather_db","postgres","postgres")
                 .locations("classpath:db/migration")
-                .baselineOnMigrate(true)
-                .load();
-        flyway.migrate();
-        return flyway;
-    }
-
-    @Bean
-    @Profile("test")
-    public Flyway testFlyway() {
-        Flyway flyway = Flyway.configure()
-                .dataSource("jdbc:h2:mem:default","","")
-                .locations("classpath:db.test_migration")
                 .baselineOnMigrate(true)
                 .load();
         flyway.migrate();
