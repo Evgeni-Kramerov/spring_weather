@@ -7,16 +7,12 @@ import org.ek.weather.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.PublicKey;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service
 public class LocationService {
     private final LocationRepository locationRepository;
-
 
     @Autowired
     public LocationService(LocationRepository locationRepository) {

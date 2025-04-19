@@ -15,6 +15,9 @@ import java.util.UUID;
 public class SessionService {
     private final SessionRepository sessionRepository;
 
+
+    //TODO No exception?
+
     @Autowired
     public SessionService(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;

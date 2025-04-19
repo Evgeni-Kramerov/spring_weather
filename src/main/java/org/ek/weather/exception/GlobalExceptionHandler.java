@@ -1,5 +1,6 @@
 package org.ek.weather.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,6 +33,11 @@ public class GlobalExceptionHandler {
                                             RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("userAlreadyExistError", true);
         return "redirect:/new";
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public String handleDataIntegrityViolationException() {
+        return "redirect:/";
     }
 
 }
