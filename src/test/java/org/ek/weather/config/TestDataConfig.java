@@ -22,7 +22,6 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = {"org.ek.weather.repository"})
-//@EnableWebMvc
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "org.ek.weather.repository")
 @Profile("test")

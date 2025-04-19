@@ -1,6 +1,6 @@
 package org.ek.weather.config;
 
-import org.ek.weather.controller.WeatherController;
+import org.ek.weather.controller.MainController;
 import org.ek.weather.http_api.OpenweatherAPI;
 import org.ek.weather.service.LocationService;
 import org.ek.weather.service.SessionService;
@@ -42,8 +42,8 @@ public class TestWebConfig implements WebMvcConfigurer {
 
     // ===Controller===
     @Bean
-    public WeatherController weatherController() {
-        return new WeatherController(userService(),sessionService(),locationService(),openweatherAPI());
+    public MainController weatherController() {
+        return new MainController(locationService(), openweatherAPI());
     }
 
     // === Thymeleaf setup ===

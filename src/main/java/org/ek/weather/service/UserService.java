@@ -36,13 +36,13 @@ public class UserService {
     }
 
     public User authenticateUser(AuthenticationRequestDTO authenticationRequestDTO) {
-        Optional<User> authentificatedUser =  userRepository.findByLogin(
+        Optional<User> authenticateUser =  userRepository.findByLogin(
                 authenticationRequestDTO.getLogin());
 
-        if (authentificatedUser.isEmpty()) {
+        if (authenticateUser.isEmpty()) {
             throw new UserNotFoundException("User not found");
         }
-        User authenticatedUser = authentificatedUser.get();
+        User authenticatedUser = authenticateUser.get();
         if (!passHasher.verifyPassword(authenticationRequestDTO,authenticatedUser)) {
             throw new InvalidPasswordException("Incorrect password");
         }
