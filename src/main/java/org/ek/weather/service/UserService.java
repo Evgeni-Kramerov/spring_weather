@@ -58,7 +58,7 @@ public class UserService {
         }
 
         if ((userRepository.findByLogin(registrationRequestDTO.getLogin()).isPresent())) {
-            throw new UserAlreadyExistException("User already exist");
+            throw new UserAlreadyExistException("User already exists");
         }
     }
 

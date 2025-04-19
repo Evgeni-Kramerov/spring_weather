@@ -52,14 +52,14 @@ public class AuthentificationController {
 
         User autentificatedUser = userService.authenticateUser(authenticationRequestDTO);
             //write session to db
-         UUID sessionId =  sessionService.createNewSession(autentificatedUser);
+        UUID sessionId =  sessionService.createNewSession(autentificatedUser);
             //make cookies with this session uuid "_sessionId"
         Cookie sessionIdCookie = new Cookie("_sessionId", sessionId.toString());
-         sessionIdCookie.setMaxAge(60 * 30);
+        sessionIdCookie.setMaxAge(60 * 30);
             //TODO Model VS response
-         response.addCookie(sessionIdCookie);
+        response.addCookie(sessionIdCookie);
 
-         return "redirect:/";
+        return "redirect:/";
 
     }
 
