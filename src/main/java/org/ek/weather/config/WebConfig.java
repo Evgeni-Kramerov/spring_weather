@@ -1,7 +1,8 @@
 package org.ek.weather.config;
 
-import jakarta.servlet.FilterRegistration;
-import org.ek.weather.filter.AutentificationFilter;
+import org.ek.weather.filter.AuthenticationFilter;
+import org.ek.weather.service.SessionService;
+import org.ek.weather.service.UserService;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +15,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -123,5 +123,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
+
+    @Bean
+    public AuthenticationFilter authenticationFilter(SessionService sessionService,
+                                                         UserService userService) {
+        return new AuthenticationFilter(sessionService,userService);
     }
 }

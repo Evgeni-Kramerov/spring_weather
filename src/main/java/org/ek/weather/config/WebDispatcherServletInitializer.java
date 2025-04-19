@@ -1,24 +1,19 @@
 package org.ek.weather.config;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.ServletRegistration;
-import org.ek.weather.filter.AutentificationFilter;
+import jakarta.servlet.*;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebDispatcherServletInitializer  extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
-    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setInitParameter("enableLoggingRequestDetails", "true");
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+
+        FilterRegistration.Dynamic authenticationFilter = servletContext.addFilter(
+                "authenticationFilter",
+                new DelegatingFilterProxy("authenticationFilter"));
+        authenticationFilter.addMappingForUrlPatterns(null, false, "/*");
     }
-
-
-    @Override
-    protected Filter[] getServletFilters() {
-        return new Filter[]{
-                            new AutentificationFilter(),
-                            };
-    }
-
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
