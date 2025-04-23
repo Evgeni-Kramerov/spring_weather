@@ -73,9 +73,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public DataSource DataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/weather_db");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("postgres");
+        dataSource.setUrl("jdbc:postgresql://db:5432/weather_db");
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUsername("user");
+        dataSource.setPassword("password");
         return dataSource;
     }
 
@@ -105,24 +106,25 @@ public class WebConfig implements WebMvcConfigurer {
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-
         return transactionManager;
     }
 
     @Bean
     public Flyway flyway() {
         Flyway flyway = Flyway.configure()
-                .dataSource("jdbc:postgresql://localhost:5432/weather_db","postgres","postgres")
+                .dataSource(DataSource())
                 .locations("classpath:db/migration")
                 .baselineOnMigrate(true)
                 .load();
+
         flyway.migrate();
         return flyway;
     }
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("resources/");
     }
 
     @Bean

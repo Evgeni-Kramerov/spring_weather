@@ -20,7 +20,7 @@ public class OpenweatherAPI {
     private final HttpClient httpClient;
     private final JsonMapper jsonMapper;
 
-    private String API_KEY = "f98157be5cf3003039c923cc0712edce";
+    private final String API_KEY = System.getenv("WEATHER_API_KEY");
 
     private final String GEOCODING_API_URL = "http://api.openweathermap.org/geo/1.0/direct?q={city name}&limit=5&appid={API key}";
     private final String WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&appid={API key}";
