@@ -19,6 +19,8 @@ import java.util.UUID;
 @Component
 public class AuthenticationFilter implements Filter {
 
+//    Rewrite everything to relative path
+
     private SessionService sessionService;
     private UserService userService;
 
@@ -37,9 +39,10 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String path = request.getRequestURI();
+        String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        if (path.equals("/login") || path.equals("/new")) {
+        if (path.equals("/login") || path.equals("/new")
+                || path.startsWith("/resources/") || path.startsWith("/static/")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -63,7 +66,7 @@ public class AuthenticationFilter implements Filter {
 
         }
 
-        response.sendRedirect("/login");
+        response.sendRedirect(request.getContextPath() + "/login");
 
     }
 
